@@ -1,9 +1,14 @@
-// @/app/components/ui/Swiper.jsx
+// // @/components/ui/MySwiper/index.jsx
 
+
+
+
+// @/components/ui/MySwiper/index.jsx
+
+import { Swiper, SwiperSlide } from "swiper/react";
 // styled-componentsでスタイル定義する
 import styled from "styled-components";
 // React用Swiperオブジェクトを読み込む
-import { Swiper, SwiperSlide } from "swiper/react";
 // 各種エフェクトを読み込む
 import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules"; // EffectFade追加
 // Swiper用各種CSSを読み込む
@@ -12,7 +17,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 // UIで使用するメディアクエリのモジュールを読み込む
-import { mq } from "./MixIn";
+import { mq } from "@/components/ui/MixIn";
 
 // 共通のStyledSwiper
 const StyledSwiper = styled(Swiper)`

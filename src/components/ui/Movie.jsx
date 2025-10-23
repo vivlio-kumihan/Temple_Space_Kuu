@@ -1,4 +1,4 @@
-// @/app/components/ui/Movie.jsx
+// @components/ui/Movie.jsx
 
 "use client";
 

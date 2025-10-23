@@ -1,4 +1,4 @@
-// @/src/hooks/useScrollAnimation.js
+// @/hooks/useScrollAnimation.js
 
 "use client";
 

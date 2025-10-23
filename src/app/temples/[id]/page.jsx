@@ -22,9 +22,11 @@ const TempleDetail = ({ params }) => {
   const [modalType, setModalType] = useState(null);
 
   useEffect(() => {
+    // console.log("🔍 取得したID:", id); // ← 追加
+    // console.log("🔍 IDの型:", typeof id); // ← 追加
     const loadTemple = async () => {
       const data = await getTempleById(id);
-      console.log("取得した寺院のデータ：", data);
+      // console.log("取得した寺院のデータ：", data);
       setTemple(data);
       setLoading(false);
     };

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getTemples } from "@/lib/temples";
 import { ImageSwiper } from "@/components/ui/MySwiper";
-import useScrollAnimation from "../hooks/useScrollAnimation";
+import useScrollAnimation from "@/hooks/useScrollAnimation";
 import styles from "./page.module.scss";
 
 const Home = () => {
@@ -93,7 +93,7 @@ const Home = () => {
         ) : (
           <div className={`${styles.temples__scroll} up`}>
             {temples.map((temple) => (
-              <Link key={temple.id} href={`/temples/$temple.id`}>
+              <Link key={temple.id} href={`/temples/${temple.id}`}>
                 <article className={styles.templeCard}>
                   <div className={styles.templeCard__image}>{temple.name}</div>
                   <div className={styles.templeCard__info}>

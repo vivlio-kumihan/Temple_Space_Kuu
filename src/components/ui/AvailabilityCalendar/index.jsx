@@ -1,9 +1,9 @@
-// @/app/components/ui/AvailabilityCalendar.jsx
+// @/components/ui/AvailabilityCalendar/index.jsx
 
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAvailability } from "../../lib/availability";
+import { getAvailability } from "@/lib/availability";
 import styles from "./AvailabilityCalendar.module.scss";
 
 const AvailabilityCalendar = ({ templeId, onSelectDateTime }) => {

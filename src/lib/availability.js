@@ -1,4 +1,4 @@
-// @/src/lib/availability.js
+// @/lib/availability.js
 
 import { supabase } from "./supabase";
 

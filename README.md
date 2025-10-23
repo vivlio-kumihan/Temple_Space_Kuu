@@ -10,11 +10,11 @@
 │   │   │   └── [id]/
 │   │   │       ├── page.js
 │   │   │       └── temple.module.scss
-│   │   └── global.scss
+│   │   ├── global.scss
 │   │   ├── layout.jsx
 │   │   ├── page.jsx
 │   │   ├── page.module.scss
-│   │   ├── reset.css
+│   │   └── reset.css
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── Footer.jsx
@@ -68,6 +68,17 @@
 │   │   │   └── Contact.module.scss
 ```
 
+命名規則の統一案
+ファイル名
+|種類|命名規則|例|
+|----|----|----|
+|ページ|page.jsx|app/temples/[id]/page.jsx|
+|レイアウト|layout.jsx|app/layout.jsx|
+|コンポーネント|PascalCase|Header/index.jsx
+|CSS Modules|コンポーネント名.module.scss|Header.module.scss または header.module.scss|
+|ユーティリティ|camelCase.js|temples.js, supabase.js|
+|Hooks|use + PascalCase.js|useScrollAnimation.js|
+|型定義（TS）|PascalCase.ts|Temple.ts|
 
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

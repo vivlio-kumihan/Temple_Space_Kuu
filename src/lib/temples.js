@@ -1,4 +1,4 @@
-// @/src/lib/temples.js
+// @/lib/temples.js
 
 import { supabase } from "./supabase";
 
@@ -72,7 +72,8 @@ export async function getTempleById(id) {
   try {
     const { data, error } = await supabase
       .from("temples")
-      .select(`
+      .select(
+        `
         *,
         spaces:temple_spaces(
           id,
@@ -88,15 +89,29 @@ export async function getTempleById(id) {
             description
           )
         )
-      `)
+      `
+      )
       .eq("id", id)
       .single();
     
-    if (error) throw error;
+    if (error) {
+      console.error("Supabase エラーの詳細:", error);
+      // console.error("エラーメッセージ:", error.message);
+      // console.error("エラーコード:", error.code);
+      // console.error("エラー詳細:", error.details);
+      // console.error("エラーヒント:", error.hint);
+      // console.error(
+      //   "完全なエラーオブジェクト:",
+      //   JSON.stringify(error, null, 2)
+      // );
+      throw error
+    };
 
     return data;
   } catch (error) {
-    console.error("寺院詳細情報の取得エラー", error);
+    console.error("寺院詳細情報の取得エラー:", error);
+    // console.error("エラーの型:", typeof error);
+    // console.error("エラーオブジェクト全体:", error);
     return null;
   }
 }

@@ -1,4 +1,4 @@
-// @/src/lib/readPhotographedWorksMetaData.jsx
+// @/lib/readPhotographedWorksMetaData.jsx
 
 import Papa from "papaparse";
 

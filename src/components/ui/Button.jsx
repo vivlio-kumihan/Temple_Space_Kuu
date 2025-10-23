@@ -1,4 +1,4 @@
-// @/app/components/ui/Button.jsx
+// @/components/ui/Button.jsx
 
 "use client";
 

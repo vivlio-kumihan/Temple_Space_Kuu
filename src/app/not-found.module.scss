@@ -1,0 +1,80 @@
+// @/app/not-found.module.scss
+
+@use '@/styles/globals' as *;
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: $color-bg-secondary;
+}
+
+.content {
+  max-width: 600px;
+  text-align: center;
+}
+
+.title {
+  @include tume;
+  margin-bottom: 1rem;
+  font-family: $font-title-en;
+  font-size: 8rem;
+  font-weight: $fw-bold;
+  color: $color-primary;
+  line-height: 1;
+  
+  @include mq(md) {
+    font-size: 12rem;
+  }
+}
+
+.subtitle {
+  @include tume;
+  margin-bottom: 1.5rem;
+  font-family: $font-mincho;
+  font-size: $fs-lg3;
+  font-weight: $fw-bold;
+  color: $color-text-secondary;
+  
+  @include mq(md) {
+    font-size: $fs-lg4;
+  }
+}
+
+.message {
+  margin-bottom: 2.5rem;
+  font-family: $font-gothic;
+  font-size: $fs-base;
+  line-height: $lh-relaxed;
+  color: $color-text-primary;
+  
+  @include mq(md) {
+    font-size: $fs-lg1;
+  }
+}
+
+.homeButton {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: $font-gothic;
+  font-size: $fs-base;
+  font-weight: $fw-medium;
+  color: $color-bg-primary;
+  background-color: $color-primary;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s;
+  
+  &:hover {
+    background-color: $color-primary-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($color: $color-primary, $alpha: 0.3);
+  }
+  
+  @include mq(md) {
+    padding: 1.25rem 3rem;
+    font-size: $fs-lg1;
+  }
+}

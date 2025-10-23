@@ -1,4 +1,4 @@
-// @/app/components/ui/MixIn.jsx
+// @components/ui/MixIn.jsx
 
 // Media Querry
 export const breakPoints = {

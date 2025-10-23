@@ -1,4 +1,4 @@
-// @/app/components/ui/Gallery.jsx
+// @/components/ui/Gallery.jsx
 
 "use client";
 
