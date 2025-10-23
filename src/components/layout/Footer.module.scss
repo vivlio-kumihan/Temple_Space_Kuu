@@ -1,0 +1,16 @@
+// @/components/layout/Footer.module.scss
+
+@use '../../styles/globals' as *;
+
+.footer {
+  width: 100%;
+  margin-top: auto;
+  padding: 2rem 0;
+  color: white;
+  background-color: #333;
+}
+
+.copyright {
+  text-align: center;
+  margin: 0;
+}

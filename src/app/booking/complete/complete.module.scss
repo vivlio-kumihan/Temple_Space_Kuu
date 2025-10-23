@@ -1,0 +1,57 @@
+// @/app/booking/complete/complete.module.scss
+
+@use '../../../styles/globals' as *;
+
+.booking {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 3rem 2rem;
+  text-align: center;
+  &__icon {
+    margin-bottom: 2rem;
+    font-size: 5rem;
+  }
+  &__title {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #333;
+  }
+  &__message {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+}
+
+.infoBox {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  text-align: left;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  &__title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  &__text {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+    color: #666;
+  }
+}
+
+.backButton {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background: #667eea;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: background 0.3s;
+  &:hover {
+    background: #5568d3;
+  }
+}

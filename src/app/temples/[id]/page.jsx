@@ -1,0 +1,234 @@
+// @/app/temples/[id]/page.jsx
+
+"use client";
+
+import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+import { getTempleById } from "@/lib/temples";
+import { createBooking } from "@/lib/availability";
+import AvailabilityCalendar from "@/components/ui/AvailabilityCalendar";
+import styles from "./temple.module.scss";
+import { ImageSwiper } from "@/components/ui/MySwiper";
+
+const TempleDetail = ({ params }) => {
+  // Next.js 15の仕様。
+  // paramsが非同期(Promise)になったため、React.use()で展開する必要。
+  const router = useRouter();
+  const { id } = use(params);
+
+  const [temple, setTemple] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState(null);
+
+  useEffect(() => {
+    const loadTemple = async () => {
+      const data = await getTempleById(id);
+      console.log("取得した寺院のデータ：", data);
+      setTemple(data);
+      setLoading(false);
+    };
+    loadTemple();
+  }, [id]);
+
+  const handleOpenModal = (type) => {
+    setModalType(type);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setModalType(null);
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <div className={styles.spinner}></div>
+        <p>読み込み中...</p>
+      </div>
+    );
+  }
+
+  if (!temple) {
+    return (
+      <div className={styles.error}>
+        <h1>寺院が見つかりませんでした。</h1>
+        <button onClick={() => router.push("/")}>トップページに戻る</button>
+      </div>
+    );
+  }
+
+  // Hero スライダー用のダミー画像（後で寺院の実際の画像に置き換え）
+  const heroSlides = [
+    {
+      id: 1,
+      src: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600&h=900&fit=crop",
+      caption: temple.name,
+    },
+    {
+      id: 2,
+      src: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&h=900&fit=crop",
+      caption: temple.name,
+    },
+    {
+      id: 3,
+      src: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=1600&h=900&fit=crop",
+      caption: temple.name,
+    },
+  ];
+
+  return (
+    <>
+      {/* Heroスライダー */}
+      <section className={styles.hero}>
+        <ImageSwiper
+          images={heroSlides}
+          width="100%"
+          height="70vh"
+          widthMqLg="100%"
+          heightMqLg="70vh"
+          useFade={true}
+        />
+      </section>
+
+      <div className={styles.container}>
+        {/* 戻るボタン */}
+        <button className={styles.backButton} onClick={() => router.back()}>
+          ←&nbsp;一覧に戻る
+        </button>
+
+        {/* 紹介セクション */}
+        <section className={styles.intro}>
+          <h1 className={styles.templeName}>{temple.name}</h1>
+          <div className={styles.location}>{temple.address}</div>
+          <div className={styles.description}>{temple.description}</div>
+
+          {/* タグ（後で実装） */}
+          <div className={styles.tags}>
+            <span className={styles.tag}>#本堂あり</span>
+            <span className={styles.tag}>#駐車場あり</span>
+            <span className={styles.tag}>#茶室あり</span>
+          </div>
+        </section>
+
+        {/* お寺の一言掲示板（後で実装） */}
+        <section className={styles.notice}>
+          <h2 className={styles.sectionTitle}>お寺からのお知らせ</h2>
+          <div className={styles.notice__board}>
+            <div className={styles.notice__item}>
+              <div className={styles.notice__date}>2025年11月1日</div>
+              <h3 className={styles.notice__title}>ヨガ教室のお知らせ</h3>
+              <a href="#" className={styles.notice__link}>
+                チラシを見る（PDF）
+              </a>
+            </div>
+            <div className={styles.notice__item}>
+              <div className={styles.notice__date}>2025年10月20日</div>
+              <h3 className={styles.notice__title}>写経会のご案内</h3>
+              <a href="#" className={styles.notice__link}>
+                チラシを見る（PDF）
+              </a>
+            </div>
+          </div>
+        </section>
+        {/* タグ（後で実装） */}
+        <section className={styles.facility}>
+          <h2 className={styles.sectionTitle}>利用可能な設備</h2>
+          <div className={styles.facility__grid}>
+            <div className={styles.facility__item}>Wi-Fi完備</div>
+            <div className={styles.facility__item}>駐車場 {temple.parking}</div>
+            <div className={styles.facility__item}>トイレあり</div>
+            <div className={styles.facility__item}>冷暖房あり</div>
+            <div className={styles.facility__item}>音響設備</div>
+            <div className={styles.facility__item}>プロジェクター</div>
+          </div>
+        </section>
+        {/* 施設スペック（部屋ごと） */}
+        <section className={styles.space}>
+          <h2 className={styles.sectionTitle}>施設について</h2>
+          {temple.spaces &&
+            temple.spaces.map((space) => (
+              <div key={space.id} className={styles.space__card}>
+                <h3 className={styles.space__name}>{space.space_name}</h3>
+                <ul className={styles.space__info}>
+                  <li>広さ: {space.size}</li>
+                  <li>収容人数: {space.capacity}名</li>
+                  <li>基本料金: {space.base_price.toLocaleString()}円/時間</li>
+                  <li>用途: {space.description}</li>
+                </ul>
+                {/* 用途別料金 */}
+                {space.usage_types && space.usage_types.length > 0 && (
+                  <div className={styles.usage_types}>
+                    <h4 className={styles.usage__title}>用途別料金</h4>
+                    {space.usage_types.map((usage) => (
+                      <div key={usage.id} className={styles.usage__item}>
+                        <span>{usage.usage_name}</span>
+                        <span>{usage.price.toLocaleString()}円／時間</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+        </section>
+        {/* 交通情報 */}
+        <section className={styles.access}>
+          <h2 className={styles.sectionTitle}>交通</h2>
+          <ul className={styles.access__info}>
+            <li className="wrapper">
+              <div className={styles.access__item}>住所</div>
+              <div className={styles.access__item}>{temple.address}</div>
+            </li>
+            <li className="wrapper">
+              <div className={styles.access__item}>アクセス</div>
+              <div className={styles.access__item}>{temple.access}</div>
+            </li>
+            <li className="wrapper">
+              <div className={styles.access__item}>駐車場</div>
+              <div className={styles.access__item}>{temple.parking}</div>
+            </li>
+          </ul>
+          {/* Google Map（後で実装）*/}
+          <div className={styles.map}>
+            <div>Google Map</div>
+          </div>
+        </section>
+        {/* 予定カレンダー */}
+        <section className={styles.calender}>
+          <h2 className={styles.sectionTitle}>利用可能日</h2>
+          <div className={styles.calender__note}>
+            カレンダー機能は既存のコンポーネントをここに配置する。
+          </div>
+        </section>
+
+        <section className={styles.action}>
+          <button
+            className={styles.reservationButton}
+            onClick={() => handleOpenModal("reservation")}
+          >
+            日付を選んで予約する
+          </button>
+          <button
+            className={styles.inquiryButton}
+            onClick={() => handleOpenModal("inquiry")}
+          >
+            利用について質問する
+          </button>
+        </section>
+      </div>
+
+      {showModal && (
+        <div className={styles.modalOverLay} onClick={handleCloseModal}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.modalClose} onClick={handleCloseModal}>×</button>
+            <h2>{modalType === "reservation" ? "予約フォーム" : "質問フォーム"}</h2>
+            <div>フォーム内容は次のステップで実装する。</div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default TempleDetail;

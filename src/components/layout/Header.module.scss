@@ -1,0 +1,75 @@
+// @/components/layout/Header.module.scss
+
+@use '../../styles/globals' as *;
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: $color-bg-primary;
+  border-bottom: 1px solid $color-secondary;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.3s;
+  z-index: 1000;
+}
+
+.container {
+  @include content-width;  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.logo {
+  font-family: $font-title-en;
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: $color-primary-dark;
+  transition: color .3s;
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  font-family: $font-gothic;
+  font-size: .95rem;
+  font-weight: 500;
+  color: $color-text-primary;
+  transition: color .3s;
+  &:hover {
+    color: $color-primary;
+  }
+  &.disabled {
+    color: $color-text-secondary;
+    opacity: .3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+@include mq(md) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .nav {
+    gap: 1rem;
+  }
+
+  .navLink {
+    font-size: .875rem;
+  }
+}
