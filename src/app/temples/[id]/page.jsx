@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation";
 import { getTempleById } from "@/lib/temples";
 import { createBooking } from "@/lib/availability";
 import AvailabilityCalendar from "@/components/ui/AvailabilityCalendar";
+import { HeroSwiper } from "@/components/ui/MySwiper";
+
 import styles from "./temple.module.scss";
-import { ImageSwiper } from "@/components/ui/MySwiper";
 
 const TempleDetail = ({ params }) => {
   // Next.js 15の仕様。
@@ -83,15 +84,8 @@ const TempleDetail = ({ params }) => {
   return (
     <>
       {/* Heroスライダー */}
-      <section className={styles.hero}>
-        <ImageSwiper
-          images={heroSlides}
-          width="100%"
-          height="70vh"
-          widthMqLg="100%"
-          heightMqLg="70vh"
-          useFade={true}
-        />
+      <section className="top-contents">
+        <HeroSwiper images={heroSlides} overlayOpacity={0.3} />
       </section>
 
       <div className={styles.container}>
@@ -102,53 +96,67 @@ const TempleDetail = ({ params }) => {
 
         {/* 紹介セクション */}
         <section className={styles.intro}>
-          <h1 className={styles.templeName}>{temple.name}</h1>
-          <div className={styles.location}>{temple.address}</div>
-          <div className={styles.description}>{temple.description}</div>
+          <h1 className={styles.intro__name}>{temple.name}</h1>
+          <div className={styles.intro__address}>{temple.address}</div>
+          <div className={styles.intro__description}>{temple.description}</div>
 
           {/* タグ（後で実装） */}
           <div className={styles.tags}>
-            <span className={styles.tag}>#本堂あり</span>
-            <span className={styles.tag}>#駐車場あり</span>
-            <span className={styles.tag}>#茶室あり</span>
+            <span className={styles.tag}>本堂あり</span>
+            <span className={styles.tag}>駐車場あり</span>
+            <span className={styles.tag}>茶室あり</span>
           </div>
         </section>
 
         {/* お寺の一言掲示板（後で実装） */}
         <section className={styles.notice}>
-          <h2 className={styles.sectionTitle}>お寺からのお知らせ</h2>
+          <h2 className={`sectionTitle ${styles.templeSectionTitle}`}>
+            お寺からの一言掲示板
+          </h2>
           <div className={styles.notice__board}>
             <div className={styles.notice__item}>
               <div className={styles.notice__date}>2025年11月1日</div>
               <h3 className={styles.notice__title}>ヨガ教室のお知らせ</h3>
+              <div className={styles.notice__text}>
+                好評のヨガ教室の開催です。〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓。詳しくはチラシをご覧ください。
+              </div>
               <a href="#" className={styles.notice__link}>
-                チラシを見る（PDF）
+                チラシを見る
               </a>
             </div>
             <div className={styles.notice__item}>
               <div className={styles.notice__date}>2025年10月20日</div>
-              <h3 className={styles.notice__title}>写経会のご案内</h3>
+              <h3 className={styles.notice__title}>写経会やります</h3>
+              <div className={styles.notice__text}>
+                好評の写経会の開催です。〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓。詳しくはチラシをご覧ください。
+              </div>
               <a href="#" className={styles.notice__link}>
-                チラシを見る（PDF）
+                チラシを見る
               </a>
             </div>
           </div>
         </section>
+
         {/* タグ（後で実装） */}
         <section className={styles.facility}>
-          <h2 className={styles.sectionTitle}>利用可能な設備</h2>
+          <h2 className={`sectionTitle ${styles.templeSectionTitle}`}>
+            利用可能な設備
+          </h2>
           <div className={styles.facility__grid}>
             <div className={styles.facility__item}>Wi-Fi完備</div>
-            <div className={styles.facility__item}>駐車場 {temple.parking}</div>
+            <div className={styles.facility__item}>駐車場{temple.parking}</div>
             <div className={styles.facility__item}>トイレあり</div>
             <div className={styles.facility__item}>冷暖房あり</div>
             <div className={styles.facility__item}>音響設備</div>
             <div className={styles.facility__item}>プロジェクター</div>
           </div>
         </section>
+
         {/* 施設スペック（部屋ごと） */}
         <section className={styles.space}>
-          <h2 className={styles.sectionTitle}>施設について</h2>
+          <h2 className={`sectionTitle ${styles.templeSectionTitle}`}>
+            施設について
+          </h2>
           {temple.spaces &&
             temple.spaces.map((space) => (
               <div key={space.id} className={styles.space__card}>
@@ -156,17 +164,23 @@ const TempleDetail = ({ params }) => {
                 <ul className={styles.space__info}>
                   <li>広さ: {space.size}</li>
                   <li>収容人数: {space.capacity}名</li>
-                  <li>基本料金: {space.base_price.toLocaleString()}円/時間</li>
+                  <li>
+                    基本料金: {space.base_price.toLocaleString()}
+                    <div className="unit-price">円／時間</div>
+                  </li>
                   <li>用途: {space.description}</li>
                 </ul>
                 {/* 用途別料金 */}
                 {space.usage_types && space.usage_types.length > 0 && (
-                  <div className={styles.usage_types}>
-                    <h4 className={styles.usage__title}>用途別料金</h4>
+                  <div className={styles.usageType}>
+                    <h4 className={styles.usageType__title}>用途別料金</h4>
                     {space.usage_types.map((usage) => (
-                      <div key={usage.id} className={styles.usage__item}>
+                      <div key={usage.id} className={styles.usageType__item}>
                         <span>{usage.usage_name}</span>
-                        <span>{usage.price.toLocaleString()}円／時間</span>
+                        <span>
+                          {usage.price.toLocaleString()}
+                          <div className="unit-price">円／時間</div>
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -174,19 +188,20 @@ const TempleDetail = ({ params }) => {
               </div>
             ))}
         </section>
+
         {/* 交通情報 */}
         <section className={styles.access}>
-          <h2 className={styles.sectionTitle}>交通</h2>
+          <h2 className={`sectionTitle ${styles.templeSectionTitle}`}>交通</h2>
           <ul className={styles.access__info}>
-            <li className="wrapper">
+            <li className={`wrapper ${styles.itemWrapper}`}>
               <div className={styles.access__item}>住所</div>
               <div className={styles.access__item}>{temple.address}</div>
             </li>
-            <li className="wrapper">
+            <li className={`wrapper ${styles.itemWrapper}`}>
               <div className={styles.access__item}>アクセス</div>
               <div className={styles.access__item}>{temple.access}</div>
             </li>
-            <li className="wrapper">
+            <li className={`wrapper ${styles.itemWrapper}`}>
               <div className={styles.access__item}>駐車場</div>
               <div className={styles.access__item}>{temple.parking}</div>
             </li>
@@ -196,11 +211,29 @@ const TempleDetail = ({ params }) => {
             <div>Google Map</div>
           </div>
         </section>
+
         {/* 予定カレンダー */}
         <section className={styles.calender}>
-          <h2 className={styles.sectionTitle}>利用可能日</h2>
-          <div className={styles.calender__note}>
-            カレンダー機能は既存のコンポーネントをここに配置する。
+          <h2 className={`sectionTitle ${styles.templeSectionTitle}`}>
+            利用可能日
+          </h2>
+          <div className={styles.calendar__description}>
+            カレンダーで◯がついている日が予約可能です。
+            <br className="mq-sm-br" />
+            ご希望の日時を選んで予約してください。
+          </div>
+          <div className={styles.calender__wrapper}>
+            <AvailabilityCalendar templeId={temple.id} />
+          </div>
+          <div className={styles.calendar__notes}>
+            <h4>ご予約について</h4>
+            <ul>
+              <li>予約は利用日の3日前までにお願いいたします。</li>
+              <li>
+                カレンダーに表示されていない日程をご希望の場合は、お問い合わせください。
+              </li>
+              <li>法要などにより急遽ご利用いただけない場合がございます。</li>
+            </ul>
           </div>
         </section>
 
@@ -222,9 +255,16 @@ const TempleDetail = ({ params }) => {
 
       {showModal && (
         <div className={styles.modalOverLay} onClick={handleCloseModal}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.modalClose} onClick={handleCloseModal}>×</button>
-            <h2>{modalType === "reservation" ? "予約フォーム" : "質問フォーム"}</h2>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className={styles.modalClose} onClick={handleCloseModal}>
+              ×
+            </button>
+            <h2>
+              {modalType === "reservation" ? "予約フォーム" : "質問フォーム"}
+            </h2>
             <div>フォーム内容は次のステップで実装する。</div>
           </div>
         </div>

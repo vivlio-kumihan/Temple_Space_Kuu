@@ -17,6 +17,11 @@ $color-text-secondary: #3c3c3c;  // 墨
 $color-bg-primary: #fff;    // オフホワイト（和紙風）
 $color-bg-secondary: #f9f6f2;    // オフホワイト（和紙風）
 
+// 名称とイメージが一致するように変換
+$color-white: $color-bg-primary;
+$color-off-white: $color-bg-secondary;
+$color-black: $color-text-secondary;
+
 // 依存カラーの変換
 $text-color: $color-text-primary;
 $primary-color: $color-primary;

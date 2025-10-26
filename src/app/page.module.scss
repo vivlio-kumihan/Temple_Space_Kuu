@@ -97,18 +97,8 @@
   }
 }
 
-// セクション・タイトル
-.sectionTitle {
-  @include tume;
+.homeSectionTitle {
   margin-bottom: 1.5rem;
-  font-size: $fs-lg4;
-  font-weight: $fw-medium;
-  text-align: center;
-  color: $color-text-secondary;
-  @include mq(md) {
-    font-size: $fs-lg4;
-    margin-bottom: 2rem;
-  }
 }
 
 // 寺院のカード（横スクロール）
@@ -118,7 +108,7 @@
   &__scroll {
     display: flex;
     gap: 1.5rem;
-    padding: 1rem 0;
+    padding-bottom: 2rem;
     scroll-behavior: smooth;
     overflow-x: auto;
     &::-webkit-scrollbar {

@@ -10,19 +10,26 @@ const AvailabilityCalendar = ({ templeId, onSelectDateTime }) => {
   const [availability, setAvailability] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTimes, setSelectedTimes] = useState([]);
 
   const timeSlots = [
     { value: "09:00", label: "9:00〜", key: "time_09" },
+    { value: "10:00", label: "10:00〜", key: "time_10" },
     { value: "11:00", label: "11:00〜", key: "time_11" },
+    { value: "12:00", label: "12:00〜", key: "time_12" },
     { value: "13:00", label: "13:00〜", key: "time_13" },
+    { value: "14:00", label: "14:00〜", key: "time_14" },
     { value: "15:00", label: "15:00〜", key: "time_15" },
+    { value: "16:00", label: "16:00〜", key: "time_16" },
+    { value: "17:00", label: "17:00〜", key: "time_17" },
   ];
 
   useEffect(() => {
     const loadAvailability = async () => {
       setLoading(true);
+      // console.log("予約可能状況を取得中...", { templeId });
       const data = await getAvailability(templeId);
+      // console.log("予約可能状況を取得しました:", data);
       setAvailability(data);
       setLoading(false);
     };
@@ -32,17 +39,52 @@ const AvailabilityCalendar = ({ templeId, onSelectDateTime }) => {
   // 日付を選択
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    setSelectedTime(null); // 時間の選択をリセット
+    setSelectedTimes([]); // 時間の選択をリセット
+
+    // console.log("日付を選択: ", date);
+    // console.log("時間選択をリセットしました。");
+    
     if (onSelectDateTime) {
-      onSelectDateTime(date, null);
+      onSelectDateTime(date, []);
     }
   };
 
-  // 時間を選択
+  // 時間を選択（複数選択対応）
   const handleTimeClick = (time) => {
-    setSelectedTime(time);
+    // console.log("クリックされた時間: ", time);
+    // console.log("現在のselectedTimes: ", selectedTimes);
+
+    if (!Array.isArray(selectedTimes)) {
+      // console.log("selectedTimesが配列ではありません: ", selectedTimes);
+      setSelectedTimes([]);
+      return;
+    }
+
+    // 既に選択されているかをチェック
+    const isAlreadySelected = selectedTimes.includes(time);
+    let newSelectedTimes;
+
+    if (isAlreadySelected) {
+      // 既に選択されている場合は解除
+      newSelectedTimes = selectedTimes.filter((t) => t !== time);
+      // console.log("時間を解除: ", time);
+    } else {
+      // 選択されていない場合は追加
+      newSelectedTimes = [...selectedTimes, time].sort();
+      // console.log("時間を選択: ", time);
+    }
+
+    // console.log("現在選択中の時間", newSelectedTimes);
+    // console.log("選択中の予約: ", {
+    //   date: selectedDate,
+    //   times: newSelectedTimes,
+    //   count: newSelectedTimes.length,
+    // });
+
+    setSelectedTimes(newSelectedTimes);
+
     if (onSelectDateTime) {
-      onSelectDateTime(selectedDate, time);
+      onSelectDateTime(selectedDate, newSelectedTimes);
     }
   };
 
@@ -86,10 +128,10 @@ const AvailabilityCalendar = ({ templeId, onSelectDateTime }) => {
           <div className={styles.selectedInfo__label}>選択中の予約</div>
           <div className={styles.selectedInfo__content}>
             <strong>{formatDate(selectedDate)}</strong>
-            {selectedTime && (
+            {selectedTimes.length > 0 && (
               <>
                 <span className={styles.selectedInfo__separator}>・</span>
-                <strong>{selectedTime}〜</strong>
+                <strong>{selectedTimes.join(", ")}</strong>
               </>
             )}
           </div>
@@ -116,18 +158,30 @@ const AvailabilityCalendar = ({ templeId, onSelectDateTime }) => {
       {/* 時間選択 */}
       {selectedDate && selectedDateAvailability && (
         <div className={styles.calendar__times}>
-          <h5 className={styles.calendar__subtitle}>時間を選択してください</h5>
+          <h5 className={styles.calendar__subtitle}>
+            時間を選択してください（複数選択可）
+          </h5>
           <div className={styles.timeSlots}>
             {timeSlots.map((slot) => {
               const isAvailable =
                 selectedDateAvailability[slot.key] === "available";
-
+              const isSelected =
+                Array.isArray(selectedTimes) &&
+                selectedTimes.includes(slot.value);
+              // ← ここにデバッグログを追加
+              console.log(`🔍 ${slot.value}:`, {
+                isAvailable,
+                isSelected,
+                selectedTimes,
+                slotValue: slot.value,
+                includes: selectedTimes.includes(slot.value),
+              });
               return (
                 <button
                   key={slot.value}
                   type="button"
                   className={`${styles.timeButton} ${
-                    selectedTime === slot.value ? styles.selected : ""
+                    isSelected ? styles.selected : ""
                   } ${isAvailable ? styles.available : styles.booked}`}
                   onClick={() => handleTimeClick(slot.value)}
                   disabled={!isAvailable}

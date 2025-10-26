@@ -1,0 +1,87 @@
+@use "@/styles/globals" as *;
+
+// 共通のスタイル
+.swiper {
+  width: var(--swiper-width, 100vw);
+  height: var(--swiper-height, 80vh);
+  @include mq(lg) {
+    width: var(--swiper-width-lg, 100vw);
+    height: var(--swiper-height-lg, 600px);
+  }
+}
+
+// GraphicSlide用
+.graphicSlide {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $color-white;
+  background-color: var(--slide-bg-color, #3b82f6);
+  &__title {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    @include mq(lg) {
+      font-size: 2rem;
+    }
+  }
+  &__text {
+    font-size: 1rem;
+    @include mq(lg) {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// ImageSwiper用
+.imageSlide {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  &__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    font-size: .85rem;
+    color: $color-white;
+    background-color: rgba($color: $color-black, $alpha: 0.6);
+    z-index: 2;
+    @include mq(lg) {
+      padding: 2rem;
+      font-size: 1rem;
+    }
+  }
+}
+
+// オーバーレイ機能
+.overlay {
+  position: relative;
+  &::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: $color-black, $alpha: var(--overlay-opacity, 0.3));
+    pointer-events: none;
+    z-index: 1;
+  }
+  &__light {
+    --overlay-opacity: 0.2;
+  }
+  &__Midium {
+    --overlay-opacity: 0.3;
+  }
+  &__dark {
+    --overlay-opacity: 0.5;
+  }
+}

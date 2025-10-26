@@ -20,6 +20,23 @@ body {
   padding: 2rem;
 }
 
+section:first-of-type {
+  margin-top: 70px;
+}
+
+// セクション・タイトル
+.sectionTitle {
+  @include tume;
+  font-size: $fs-lg4;
+  font-weight: $fw-bold;
+  text-align: center;
+  color: $color-text-secondary;
+  @include mq(md) {
+    font-size: $fs-lg4;
+    margin-bottom: 2rem;
+  }
+}
+
 h1,
 h2,
 h3,
@@ -28,6 +45,7 @@ h5,
 h6 {
   @include tume;
   font-family: $font-mincho;
+  font-weight: $fw-bold;
   line-height: $lh-tight;
 }
 
@@ -79,4 +97,10 @@ a {
   @include mq(md) {
     display: none;
   }
+}
+
+.unit-price {
+  display: inline;
+  font-size: $fs-xs;
+  color: $color-text-primary;
 }

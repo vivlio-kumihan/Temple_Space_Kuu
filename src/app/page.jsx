@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getTemples } from "@/lib/temples";
-import { ImageSwiper } from "@/components/ui/MySwiper";
+import { HeroSwiper } from "@/components/ui/MySwiper";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import styles from "./page.module.scss";
 
@@ -28,20 +28,20 @@ const Home = () => {
     {
       id: 1,
       src: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600&h=900&fit=crop",
-      caption: "kuː",
-      subtitle: "近くのお寺で、じぶん時間の過ごし方",
+      subtitle: "kuː",
+      caption: "近くのお寺で、じぶん時間の過ごし方",
     },
     {
       id: 2,
       src: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&h=900&fit=crop",
-      caption: "kuː",
-      subtitle: "お寺で紡ぐ、人とのご縁",
+      subtitle: "kuː",
+      caption: "お寺で紡ぐ、人とのご縁",
     },
     {
       id: 3,
       src: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=1600&h=900&fit=crop",
-      caption: "kuː",
-      subtitle: "Nothing stands alone. We exist through connections.",
+      subtitle: "kuː",
+      caption: "Nothing stands alone. We exist through connections.",
     },
   ];
 
@@ -57,14 +57,7 @@ const Home = () => {
     <>
       {/* Heroスライダー */}
       <section className={styles.hero}>
-        <ImageSwiper
-          image={heroSlides}
-          width="100vw"
-          height="90vh"
-          widthMqLg="100vw"
-          heightMqLg="90vh"
-          useFade={true}
-        />
+        <HeroSwiper images={heroSlides} overlayOpacity={0.3} />
       </section>
 
       {temples.length >= 8 && (
@@ -83,7 +76,9 @@ const Home = () => {
 
       {/* 寺院のカード表示 */}
       <section className={`${styles.temples} appear`}>
-        <h2 className={`${styles.sectionTitle} up`}>掲載寺院</h2>
+        <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
+          掲載寺院
+        </h2>
         {loading ? (
           <div className={`${styles.loading} up`}>読み込み中...</div>
         ) : temples.length === 0 ? (
@@ -114,7 +109,7 @@ const Home = () => {
 
       {/* 利用例 */}
       <section className={`${styles.scenes} appear`}>
-        <h2 className={`${styles.sectionTitle} up`}>
+        <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
           こんな使い方が
           <br className="mq-sm-br" />
           できます
@@ -157,7 +152,9 @@ const Home = () => {
 
       {/* 利用案内 */}
       <section className={`${styles.guide} appear`} id="guide">
-        <h2 className={`${styles.sectionTitle} up`}>ご利用の流れ</h2>
+        <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
+          ご利用の流れ
+        </h2>
         <div className={styles.guide__steps}>
           <div className={`${styles.step} up`}>
             <div className={styles.step__number}>

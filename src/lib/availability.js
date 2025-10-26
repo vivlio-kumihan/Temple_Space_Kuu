@@ -17,31 +17,32 @@ export async function getAvailability(templeId) {
 
     return data || [];
   } catch (error) {
+    console.error("予約可能状況の取得エラー: ", error);
     return [];
   }
 }
 
 /**
- * 予約を作成(時間枠をbookedに変更)
+ * 複数の時間枠を予約
  */
-export async function createBooking(templeId, date, time) {
+export async function createBooking(templeId, date, timeSlots) {
   try {
+    // 時間枠とカラム名のマッピング
     const timeColumnMap = {
       "09:00": "time_09",
+      "10:00": "time_10",
       "11:00": "time_11",
+      "12:00": "time_12",
       "13:00": "time_13",
+      "14:00": "time_14",
       "15:00": "time_15",
+      "16:00": "time_16",
+      "17:00": "time_17",
     };
-
-    const timeColumn = timeColumnMap[time];
-
-    if (!timeColumn) {
-      throw new Error(`無効な時間です: ${time}`);
-    }
 
     // 該当するレコードを検索
     const { data: existingData, error: fetchError } = await supabase
-      .from("availability")
+      .from("availabilty")
       .select("*")
       .eq("temple_id", templeId)
       .eq("date", date);
@@ -52,32 +53,47 @@ export async function createBooking(templeId, date, time) {
     if (!existingData || existingData.length === 0) {
       return {
         success: false,
-        error: "該当する日付が見つかりません。"
-      }
+        error: "該当する日付が見つかりません。",
+      };
     }
 
     const record = existingData[0];
 
-    // 既に予約済みかチェック
-    if (record[timeColumn] === "booked") {
-      return {
-        success: false,
-        error: "この時間は既に予約されています。",
-      };
+    // 選択された時間枠がすべて予約可能かチェック
+    for (const time of timeSlots) {
+      const timeColumn = timeColumnMap[time];
+      if (!timeColumn) {
+        return {
+          success: false,
+          error: `無効な時間です: ${time}`,
+        };
+      }
+      if (record[timeColumn] === "booked") {
+        return {
+          success: false,
+          error: `${time}は既に予約されています。`,
+        };
+      }
     }
 
-    // 予約を確定(該当する時間枠を'booked'に変更)
+    // すべての時間枠を 'booked' に変更
+    const updateData = {};
+    timeSlots.forEach((time) => {
+      const timeColumn = timeColumnMap[time];
+      updateData[timeColumn] = "booked";
+    });
+
     const { error: updateError } = await supabase
       .from("availability")
-      .update({ [timeColumn]: "booked" })
-      .eq("id", record.id);
-
+      .update(updateData)
+      .eq("id", record.id)
+    
     if (updateError) throw updateError;
 
     return {
       success: true,
-      message: "予約が完了しました",
-    };
+      message: "予約が完了しました。",
+    }
   } catch (error) {
     console.error("予約エラー:", error);
     return {

@@ -12,28 +12,35 @@
 │   │   │       └── temple.module.scss
 │   │   ├── global.scss
 │   │   ├── layout.jsx
+│   │   ├── not-found.jsx
+│   │   ├── not-found.module.scss
 │   │   ├── page.jsx
 │   │   ├── page.module.scss
 │   │   └── reset.css
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Footer.jsx
-│   │   │   ├── Footer.module.scss
-│   │   │   ├── Header.jsx
-│   │   │   └── Header.module.scss
+│   │   │   ├── Footer
+│   │   │   │   ├── index.jsx
+│   │   │   │   └── Footer.module.scss
+│   │   │   └── Header.jsx
+│   │   │       ├── index.jsx
+│   │   │       └── Header.module.scss
 │   │   └── ui/
-│   │       ├── AvailabilityCalendar.jsx
-│   │       ├── AvailabilityCalendar.module.scss
+│   │       ├── AvailabilityCalendar
+│   │       │   ├── index.jsx
+│   │       │   └── AvailabilityCalendar.module.scss
+│   │       ├── MySwiper.jsx
+│   │       │   └── index.jsx
+│   │       │   └── MySwiperr.module.scss
 │   │       ├── Button.jsx (styled-components)
 │   │       ├── Gallery.jsx (styled-components)
-│   │       ├── MixIn.jsx
-│   │       ├── Movie.jsx
-│   │       └── MySwiper.jsx (styled-components)
+│   │       ├── Movie.jsx (styled-components)
+│   │       └── MixIn.jsx
 │   ├── hooks/
-│   │   └── useScrollAnimation.jsx
+│   │   └── useScrollAnimation.js
 │   ├── lib/
 │   │   ├── availability.js
-│   │   ├── readPhotographedWorksMetaData.jsx
+│   │   ├── readPhotographedWorksMetaData.js
 │   │   ├── supabase.js
 │   │   └── temples.js
 │   ├── styles/
@@ -52,7 +59,7 @@
     │   │   └── photo02.jpg
     │   │   └── photo03.jpg
     │   │   └── ...
-    │   └── temples/
+    │   └── templesImages/
     └── movies/       
         └── sample.mp4
 ```
