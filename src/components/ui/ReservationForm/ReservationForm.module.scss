@@ -1,0 +1,159 @@
+// @/components/ui/ReservationForm/ReservationForm.module.scss
+
+@use "@/styles/globals" as *;
+
+.form {
+  width: 100%;
+  max-width: 600px;
+
+  &__title {
+    margin-bottom: 0.5rem;
+    font-family: $font-mincho;
+    font-size: $fs-lg4;
+    font-weight: $fw-bold;
+    text-align: center;
+    color: $color-text-secondary;
+  }
+
+  &__subtitle {
+    margin-bottom: 2rem;
+    font-family: $font-gothic;
+    font-size: $fs-lg1;
+    text-align: center;
+    color: $color-text-primary;
+  }
+
+  &__selected {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: rgba($color: $color-primary, $alpha: 0.1);
+    border-left: 4px solid $color-primary;
+    border-radius: 4px;
+  }
+
+  &__selectedLabel {
+    margin-bottom: 0.5rem;
+    font-family: $font-gothic;
+    font-size: $fs-sm;
+    font-weight: $fw-medium;
+    color: $color-text-secondary;
+  }
+
+  &__selectedContent {
+    font-family: $font-gothic;
+    font-size: $fs-lg1;
+    color: $color-text-secondary;
+    line-height: $lh-relaxed;
+
+    strong {
+      color: $color-primary;
+    }
+  }
+
+  &__error {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    font-family: $font-gothic;
+    font-size: $fs-base;
+    color: $color-accent;
+    background-color: rgba($color: $color-accent, $alpha: 0.1);
+    border-left: 4px solid $color-accent;
+    border-radius: 4px;
+  }
+
+  &__item {
+    margin-bottom: 1.5rem;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: $font-gothic;
+    font-size: $fs-base;
+    font-weight: $fw-medium;
+    color: $color-text-secondary;
+  }
+
+  &__required {
+    margin-left: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: $fs-sm;
+    font-weight: $fw-bold;
+    color: $color-bg-primary;
+    background-color: $color-accent;
+    border-radius: 4px;
+  }
+
+  &__input,
+  &__textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-family: $font-gothic;
+    font-size: $fs-base;
+    color: $color-text-secondary;
+    background-color: $color-bg-primary;
+    border: 2px solid $color-secondary;
+    border-radius: 8px;
+    transition: all 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color: $color-primary, $alpha: 0.1);
+    }
+
+    &::placeholder {
+      color: $color-text-primary;
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  &__cancelButton,
+  &__submitButton {
+    flex: 1;
+    padding: 1rem;
+    font-family: $font-gothic;
+    font-size: $fs-lg1;
+    font-weight: $fw-bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__cancelButton {
+    color: $color-text-secondary;
+    background-color: $color-bg-secondary;
+    border: 2px solid $color-secondary;
+
+    &:hover:not(:disabled) {
+      background-color: $color-secondary;
+    }
+  }
+
+  &__submitButton {
+    color: $color-bg-primary;
+    background-color: $color-primary;
+
+    &:hover:not(:disabled) {
+      background-color: $color-primary-dark;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($color: $color-primary, $alpha: 0.3);
+    }
+  }
+}

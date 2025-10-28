@@ -169,13 +169,13 @@ const AvailabilityCalendar = ({ templeId, onSelectDateTime }) => {
                 Array.isArray(selectedTimes) &&
                 selectedTimes.includes(slot.value);
               // ← ここにデバッグログを追加
-              console.log(`🔍 ${slot.value}:`, {
+              {/* console.log(`🔍 ${slot.value}:`, {
                 isAvailable,
                 isSelected,
                 selectedTimes,
                 slotValue: slot.value,
                 includes: selectedTimes.includes(slot.value),
-              });
+              }); */}
               return (
                 <button
                   key={slot.value}

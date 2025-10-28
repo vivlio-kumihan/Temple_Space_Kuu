@@ -5,8 +5,9 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { getTempleById } from "@/lib/temples";
-import { createBooking } from "@/lib/availability";
 import AvailabilityCalendar from "@/components/ui/AvailabilityCalendar";
+import ReservationForm from "@/components/ui/ReservationForm";
+import InquiryForm from "@/components/ui/InquiryForm";
 import { HeroSwiper } from "@/components/ui/MySwiper";
 
 import styles from "./temple.module.scss";
@@ -21,10 +22,18 @@ const TempleDetail = ({ params }) => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
+  const [calenderKey, setCalenderKey] = useState(0)
+
+  // カレンダーが選択された日時
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTimes, setSelectedTimes] = useState([]);
+
+  // 予約完了メッセージ
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    // console.log("🔍 取得したID:", id); // ← 追加
-    // console.log("🔍 IDの型:", typeof id); // ← 追加
+    // console.log("取得したID:", id); // ← 追加
+    // console.log("IDの型:", typeof id); // ← 追加
     const loadTemple = async () => {
       const data = await getTempleById(id);
       // console.log("取得した寺院のデータ：", data);
@@ -34,15 +43,65 @@ const TempleDetail = ({ params }) => {
     loadTemple();
   }, [id]);
 
+  // カレンダーで日時が選択された時
+  const handleSelectedDateTime = (date, times) => {
+    setSelectedDate(date);
+    setSelectedTimes(times);
+  };
+
+  // モーダルを開く
   const handleOpenModal = (type) => {
+    // モーダルを開く際に日時が選択されているかをチェックする。
+    if (type === "reservation") {
+      if (!selectedDate || selectedTimes.length === 0) {
+        alert("日時を選択してください。");
+        return;
+      }
+    }
     setModalType(type);
     setShowModal(true);
   };
 
+  // モーダルを閉じる
   const handleCloseModal = () => {
     setShowModal(false);
     setModalType(null);
   };
+
+  // 予約成功時
+  const handleReservationSuccess = (result) => {
+    // 成功メッセージを表示
+    setSuccessMessage(result.message);
+    // カレンダーの選択をリセット
+    setSelectedDate(null);
+    setSelectedTimes([]);
+    // カレンダーをリセット
+    setCalenderKey((prev) => prev + 1);
+    // 5秒後にメッセージを消す
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 5000);
+    // ページトップまでスクロールさせてターンが変わったことを認知させる。
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  // 問い合わせの成功時
+  const handleInquirySuccess = (result) => {
+    // 成功メッセージを表示
+    setSuccessMessage(result.message);
+    // 5秒後にメッセージを消す
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 5000);
+    // ページトップまでスクロールさせてターンが変わったことを認知させる。
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 
   if (loading) {
     return (
@@ -89,6 +148,11 @@ const TempleDetail = ({ params }) => {
       </section>
 
       <div className={styles.container}>
+        {/* 成功メッセージ */}
+        {successMessage && (
+          <div className={styles.successMessage}>{successMessage}</div>
+        )}
+
         {/* 戻るボタン */}
         <button className={styles.backButton} onClick={() => router.back()}>
           ←&nbsp;一覧に戻る
@@ -223,7 +287,11 @@ const TempleDetail = ({ params }) => {
             ご希望の日時を選んで予約してください。
           </div>
           <div className={styles.calender__wrapper}>
-            <AvailabilityCalendar templeId={temple.id} />
+            <AvailabilityCalendar
+              key={calenderKey}
+              templeId={temple.id}
+              onSelectDateTime={handleSelectedDateTime}
+            />
           </div>
           <div className={styles.calendar__notes}>
             <h4>ご予約について</h4>
@@ -237,6 +305,7 @@ const TempleDetail = ({ params }) => {
           </div>
         </section>
 
+        {/* アクション・ボタン */}
         <section className={styles.action}>
           <button
             className={styles.reservationButton}
@@ -265,7 +334,23 @@ const TempleDetail = ({ params }) => {
             <h2>
               {modalType === "reservation" ? "予約フォーム" : "質問フォーム"}
             </h2>
-            <div>フォーム内容は次のステップで実装する。</div>
+            {modalType === "reservation" ? (
+              <ReservationForm
+                templeId={temple.id}
+                templeName={temple.name}
+                selectedDate={selectedDate}
+                selectedTimes={selectedTimes}
+                onClose={handleCloseModal}
+                onSuccess={handleReservationSuccess}
+              />
+            ) : (
+              <InquiryForm
+                templeId={temple.id}
+                templeName={temple.name}
+                onClose={handleCloseModal}
+                onSuccess={handleInquirySuccess}
+              />
+            )}
           </div>
         </div>
       )}
