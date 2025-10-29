@@ -5,11 +5,11 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { getTempleById } from "@/lib/temples";
+import { HeroSwiper } from "@/components/ui/MySwiper";
 import AvailabilityCalendar from "@/components/ui/AvailabilityCalendar";
+import Modal from "@/components/ui/Modal";
 import ReservationForm from "@/components/ui/ReservationForm";
 import InquiryForm from "@/components/ui/InquiryForm";
-import Modal from "@/components/ui/Modal";
-import { HeroSwiper } from "@/components/ui/MySwiper";
 
 import styles from "./temple.module.scss";
 

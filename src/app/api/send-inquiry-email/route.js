@@ -48,7 +48,7 @@ ${message}
     };
 
     await transporter.sendMail(adminMailOptions);
-    console.log("✅ 運営者への通知メール送信完了（問い合わせ）");
+    // console.log("✅ 運営者への通知メール送信完了（問い合わせ）");
 
     // 2. お客様への確認メール
     const customerMailOptions = {
@@ -78,7 +78,7 @@ Tel: 090-xxxx-xxxx
     };
 
     await transporter.sendMail(customerMailOptions);
-    console.log("✅ お客様への確認メール送信完了（問い合わせ）");    
+    // console.log("✅ お客様への確認メール送信完了（問い合わせ）");    
 
     return NextResponse.json({
       success: true,

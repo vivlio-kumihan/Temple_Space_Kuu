@@ -50,9 +50,8 @@ export async function getTemples() {
         image_url: temple.image_url,
         price:
           temple.spaces && temple.spaces.length > 0
-            ? `${Math.min(
-                ...temple.spaces.map((s) => s.base_price)
-              ).toLocaleString()}円〜/時間`
+            ? `${Math.min(...temple.spaces.map((s) => s.base_price))
+                .toLocaleString()}円〜/時間`
             : "料金はお問い合わせください",
       };
     });
@@ -106,7 +105,7 @@ export async function getTempleById(id) {
       // );
       throw error
     };
-
+    // console.log(data);
     return data;
   } catch (error) {
     console.error("寺院詳細情報の取得エラー:", error);

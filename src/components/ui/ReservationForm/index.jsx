@@ -49,6 +49,8 @@ const ReservationForm = ({
     setLoading(true);
 
     // 予約データを送信
+    // ここで createReservation関数を呼び出している。
+    // propsを通して @/lib/contacts.jsで処理される。
     const result = await createReservation({
       templeId,
       templeName,

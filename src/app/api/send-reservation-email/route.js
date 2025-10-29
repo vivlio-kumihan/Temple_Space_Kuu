@@ -3,7 +3,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-// SMTPトランスポーターを作成
+// SMTPトランスポーター（送信設定）を作成
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT),
@@ -16,8 +16,9 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(request) {
   try {
+    // リクエストのボディ（JSON）を取得
     const data = await request.json();
-
+    // 分割代入でデータを取り出す
     const {
       templeName,
       date,
@@ -31,9 +32,10 @@ export async function POST(request) {
     } = data;
 
     // 1. 運営者への通知メール
+    //    メールの内容を定義する。
     const adminMailOptions = {
-      from: process.env.MAIL_FROM,
-      to: process.env.ADMIN_EMAIL,
+      from: process.env.MAIL_FROM, // 送信元
+      to: process.env.ADMIN_EMAIL, // 送信先（運営者）
       subject: `【新規予約】${templeName} - ${customerName}様`,
       text: `
 予約リクエストがありました。
@@ -51,9 +53,13 @@ export async function POST(request) {
 管理画面で確認してください。
       `,
     };
-
+    // transporter.sendMail関数がやっていること
+    //   1. SMTPサーバー（quad9.sakura.ne.jp）に接続
+    //   2. 認証（user, pass）
+    //   3. メールを送信
+    //   4. 結果を返す（成功 or 失敗）
     await transporter.sendMail(adminMailOptions);
-    console.log("✅ 運営者への通知メール送信完了");
+    // console.log("✅ 運営者への通知メール送信完了");
 
     // 2. お客様への確認メール
     const customerMailOptions = {
@@ -99,8 +105,12 @@ Tel: 090-xxxx-xxxx
     };
 
     await transporter.sendMail(customerMailOptions);
-    console.log("✅ お客様への確認メール送信完了");
+    // console.log("✅ お客様への確認メール送信完了");
 
+    // await transporter.sendMail(adminMailOptions);
+    // await transporter.sendMail(customerMailOptions);
+    // それぞれのメール送信の処理がうまく行けば
+    // 成功を返してメール送信の処理を終了。
     return NextResponse.json({
       success: true,
       message: "メールを送信しました",

@@ -3,6 +3,12 @@
 /**
  * 予約通知メールを送信（運営者 + お客様）
  */
+// 引数としてreservationDataを
+// sendReservationEmails関数に渡して、
+// メールサーバーへ情報を送る。
+// メソッドはPOSTを使う。
+// 送り先は、
+// @/app/api/send-reservation-email/route.jsへ送っている。
 export async function sendReservationEmails(reservationData) {
   try {
     const response = await fetch("/api/send-reservation-email", {

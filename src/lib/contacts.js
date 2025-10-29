@@ -1,17 +1,19 @@
 // @/lib/contacts.js
 
+// 役割：データベースに保存して、メール送信を呼び出す。
+
 import { supabase } from "./supabase";
 import { sendReservationEmails } from "./email";
 import { sendInquiryEmails } from "./email";
 
-// 予約を作成
+// 予約を作成する関数定義
 export async function createReservation(reservationData) {
   try {
-    // 振込期限
+    // 1. 振込期限を計算する（3日後の23時59分59秒）
     const deadline = new Date();
     deadline.setDate(deadline.getDate() + 3);
     deadline.setHours(23, 59, 59);
-
+    // 日付の形式を『0000年00月00日（曜日）』にフォーマットする関数の定義
     const formatDate = (dateStr) => {
       const date = new Date(dateStr);
       const year = date.getFullYear();
@@ -23,10 +25,9 @@ export async function createReservation(reservationData) {
 
       return `${year}年${month}月${day}日（${dayOfWeek}）`;
     };
-
     const deadlineStr = formatDate(deadline.toISOString());
 
-    // 1. contacts テーブルに保存
+    // 2. contacts テーブルに予約データを保存
     const { data: contactData, error: contactError } = await supabase
       .from("contacts")
       .insert([
@@ -40,16 +41,18 @@ export async function createReservation(reservationData) {
           phone: reservationData.phone,
           address: reservationData.address,
           message: reservationData.message,
-          status: "reserved", // 仮押さえ
+          status: "reserved", // ← 仮押さえ
         },
       ])
-      .select();
+      .select(); // ← 挿入したデータを取得
 
     if (contactError) throw contactError;
 
     // console.log("✅ contacts テーブルに保存完了");
 
-    // 2. availability テーブルを "reserved" に変更
+    // 3. availabilityテーブルを更新する。
+    //    選択された時間を "reserved" に変更する。
+    // 時間とカラム名のマッピング
     const timeColumnMap = {
       "09:00": "time_09",
       "10:00": "time_10",
@@ -67,20 +70,23 @@ export async function createReservation(reservationData) {
       .select("*")
       .eq("temple_id", reservationData.templeId)
       .eq("date", reservationData.date);
-
+    // エラーがあったら即座に処理を中断して
+    // catch ブロックでエラー処理をする。
+    // 上の文章と一緒に書く定型文。
     if (availFetchError) throw availFetchError;
 
+    // データが存在する場合、更新する。
     if (availData && availData.length > 0) {
       const record = availData[0];
       const updateData = {};
-
+      // 選択された時間を "reserved" に変更する。
       reservationData.times.forEach((time) => {
         const timeColumn = timeColumnMap[time];
         if (timeColumn) {
           updateData[timeColumn] = "reserved";
         }
       });
-
+      // 更新を実行
       const { error: updateError } = await supabase
         .from("availability")
         .update(updateData)
@@ -91,7 +97,7 @@ export async function createReservation(reservationData) {
       // console.log("availability テーブルを reserved に変更完了");
     }
 
-    // 3. メール送信
+    // 4. メール送信
     const emailResult = await sendReservationEmails({
       templeName: reservationData.templeName,
       date: formatDate(reservationData.date),
@@ -103,14 +109,14 @@ export async function createReservation(reservationData) {
       message: reservationData.message,
       deadline: deadlineStr,
     });
-
+    // メール送信が失敗しても予約は成立させる。
     if (!emailResult.success) {
       console.warn(
         "⚠️ メール送信に失敗しましたが、予約は保存されました。: ",
         emailResult.error
       );
     }
-
+    // 5. 成功を返す
     return {
       success: true,
       data: contactData[0],
