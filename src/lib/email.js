@@ -29,7 +29,7 @@ export async function sendReservationEmails(reservationData) {
       throw new Error(result.error);
     }
 
-    console.log("✅ メール送信成功");
+    // console.log("✅ メール送信成功");
 
     return {
       success: true,
@@ -69,7 +69,7 @@ export async function sendInquiryEmails(inquiryData) {
       throw new Error(result.error);
     }
 
-    console.log("✅ メール送信成功");
+    // console.log("✅ メール送信成功");
 
     return {
       success: true,

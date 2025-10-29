@@ -47,7 +47,7 @@ export async function createReservation(reservationData) {
 
     if (contactError) throw contactError;
 
-    console.log("✅ contacts テーブルに保存完了");
+    // console.log("✅ contacts テーブルに保存完了");
 
     // 2. availability テーブルを "reserved" に変更
     const timeColumnMap = {
@@ -88,7 +88,7 @@ export async function createReservation(reservationData) {
 
       if (updateError) throw updateError;
 
-      console.log("availability テーブルを reserved に変更完了");
+      // console.log("availability テーブルを reserved に変更完了");
     }
 
     // 3. メール送信
@@ -127,7 +127,7 @@ export async function createReservation(reservationData) {
   }
 }
 
-// 問い合わせと作成
+// 問い合わせを作成
 export async function createInquiry(inquiryData) {
   try {
     const { data, error } = await supabase
@@ -147,7 +147,7 @@ export async function createInquiry(inquiryData) {
 
     if (error) throw error;
     
-    console.log("✅ contacts テーブルに保存完了（問い合わせ）");
+    // console.log("✅ contacts テーブルに保存完了（問い合わせ）");
 
     const emailResult = await sendInquiryEmails({
       templeName: inquiryData.templeName,

@@ -1,0 +1,53 @@
+// @/components/ui/Modal/Modal.module.scss
+
+@use "@/styles/globals" as *;
+
+// モーダル
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  background-color: rgba($color: $color-black, $alpha: .5);
+  z-index: 1000;
+}
+
+.content {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: $color-bg-primary;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  
+  @include mq(md) {
+    padding: 3rem;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  font-size: 2rem;
+  font-weight: $fw-bold;
+  color: $color-text-primary;
+  background-color: transparent;
+  border: none;
+  transition: all 0.3s;
+  cursor: pointer;
+  &:hover {
+    color: $color-primary;
+    transform: rotate(90deg);
+  }
+}

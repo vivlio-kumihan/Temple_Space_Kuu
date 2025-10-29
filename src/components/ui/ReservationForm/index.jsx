@@ -27,9 +27,7 @@ const ReservationForm = ({
   // フォームの入力値を更新
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev, [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // フォームの送信

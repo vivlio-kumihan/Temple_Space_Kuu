@@ -29,8 +29,8 @@ const ysabeau = Ysabeau({
 
 // meta要素の設定
 export const metadata = {
-  title: 'みんてら | temple VC',
-  description: '動画・写真クリエイターのポートフォリオサイト',
+  title: "お寺で過ごす自由時間 | temple space Ku:",
+  description: "身近なお寺で充実した自分時間のすごし方のご提案",
 };
 
 export default function RootLayout({ children }) {
