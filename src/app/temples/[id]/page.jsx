@@ -10,6 +10,7 @@ import AvailabilityCalendar from "@/components/ui/AvailabilityCalendar";
 import Modal from "@/components/ui/Modal";
 import ReservationForm from "@/components/ui/ReservationForm";
 import InquiryForm from "@/components/ui/InquiryForm";
+import { Button } from "@/components/ui/Button";
 
 import styles from "./temple.module.scss";
 
@@ -122,7 +123,8 @@ const TempleDetail = ({ params }) => {
     return (
       <div className={styles.error}>
         <h1>寺院が見つかりませんでした。</h1>
-        <button onClick={() => router.push("/")}>トップページに戻る</button>
+        <Button onClick={() => router.push("/")}>トップページに戻る</Button>
+        {/* <button onClick={() => router.push("/")}>トップページに戻る</button> */}
       </div>
     );
   }
@@ -159,9 +161,10 @@ const TempleDetail = ({ params }) => {
           <div className={styles.successMessage}>{successMessage}</div>
         )}
         {/* 戻るボタン */}
-        <button className={styles.backButton} onClick={() => router.back()}>
+        <Button className={styles.backButton} onClick={() => router.back()}>←&nbsp;一覧に戻る</Button>
+        {/* <button className={styles.backButton} onClick={() => router.back()}>
           ←&nbsp;一覧に戻る
-        </button>
+        </button> */}
         {/* 紹介セクション */}
         <section className={styles.intro}>
           <h1 className={styles.intro__name}>{temple.name}</h1>

@@ -50,32 +50,32 @@
   }
 }
 
-// ホームへ戻るボタン
-.backButton {
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-  padding: 0.75rem 1.5rem;
-  font-family: $font-gothic;
-  font-size: $fs-base;
-  font-weight: $fw-medium;
-  text-decoration: none;
-  color: $color-text-primary;
-  background-color: $color-off-white;
-  border: 2px solid $color-secondary;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all .3s;
-  &:hover {
-    color: $color-text-secondary;
-    background-color: $color-secondary;
-    transform: translateY(-4px);
-  }
-  @include mq(md) {
-    padding: .875rem 2rem;
-    font-size: $fs-lg1;
-  }
-}
+// // ホームへ戻るボタン
+// .backButton {
+//   display: block;
+//   margin: 0 auto;
+//   margin-bottom: 2rem;
+//   padding: 0.75rem 1.5rem;
+//   font-family: $font-gothic;
+//   font-size: $fs-base;
+//   font-weight: $fw-medium;
+//   text-decoration: none;
+//   color: $color-text-primary;
+//   background-color: $color-off-white;
+//   border: 2px solid $color-secondary;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   transition: all .3s;
+//   &:hover {
+//     color: $color-text-secondary;
+//     background-color: $color-secondary;
+//     transform: translateY(-4px);
+//   }
+//   @include mq(md) {
+//     padding: .875rem 2rem;
+//     font-size: $fs-lg1;
+//   }
+// }
 
 .intro,
 .notice,

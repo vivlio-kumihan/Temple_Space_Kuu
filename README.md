@@ -2,6 +2,11 @@
 ```
 ├── src/
 │   ├── app/
+│   │   ├── api/
+│   │   │   ├── send-inquiry-email/
+│   │   │   │  └── route.js
+│   │   │   └── send-reservation-email/
+│   │   │       └── route.js
 │   │   ├── booking/
 │   │   │   └── complete/
 │   │   │       ├── page.jsx
@@ -29,9 +34,18 @@
 │   │       ├── AvailabilityCalendar
 │   │       │   ├── index.jsx
 │   │       │   └── AvailabilityCalendar.module.scss
-│   │       ├── MySwiper.jsx
+│   │       ├── MySwiper
 │   │       │   └── index.jsx
 │   │       │   └── MySwiperr.module.scss
+│   │       ├── InquiryForm
+│   │       │   └── index.jsx
+│   │       │   └── inquiryForm.module.scss
+│   │       ├── ReservationForm
+│   │       │   └── index.jsx
+│   │       │   └── ReservationForm.module.scss
+│   │       ├── Modal
+│   │       │   └── index.jsx
+│   │       │   └── Modal.module.scss
 │   │       ├── Button.jsx (styled-components)
 │   │       ├── Gallery.jsx (styled-components)
 │   │       ├── Movie.jsx (styled-components)
@@ -40,6 +54,8 @@
 │   │   └── useScrollAnimation.js
 │   ├── lib/
 │   │   ├── availability.js
+│   │   ├── contacts.js
+│   │   ├── email.js
 │   │   ├── readPhotographedWorksMetaData.js
 │   │   ├── supabase.js
 │   │   └── temples.js
@@ -49,6 +65,7 @@
 │   │       ├── _mixins.scss
 │   │       └── _variables.scss
 │   └── assets/
+├── .env.local
 └── public/
     ├── data/
     │   └── temples.csv
@@ -144,3 +161,41 @@ https://adcvlpeqpdupwfjhdooz.supabase.co
 
 anon public (公開用キー)
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkY3ZscGVxcGR1cHdmamhkb296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3OTc5MjQsImV4cCI6MjA3NjM3MzkyNH0.G6yCujQTjnf9rM-iGPnzumVtjcLoCOAoqMCnMdJFNpM
+
+『お寺のレンタルサービスサイト制作』『お寺のレンタルサービスサイト制作その2』という二つの会話を参照してほしい。
+この二つでやっていることは、お寺の空いた空間をレンタルするサービスを企画している。実際に動くサンプルサイトを作って売り込んだほうがいいという判断で始めた。
+
+サイトマップは提出した通りの構成です。
+君が提案したところまでは実装できました。
+詳細ページで、Supabaseと連携を取って解決しないといけないことはまだまだあるがここまできました。
+
+それそれが長くなるので質問するスペースも少ないだろうと判断して、引き続き会話をここで始めさせてください。
+
+さて、ボタンについて、
+以前、どこでも持っていけるようにボタンのコンポーネントを作っていました。
+styled-componentで作っていました。
+このサイトを制作するまで、練習でReactからNext.jsへ移行するまで、uiはstyled-componentで作る方針でいたのですが、このNext.jsのこのサイトを本格的に作っていった都合上、styled-componentで作る方針はやめました。
+ディレクトリの構成を見てもらったらわかるように今更styled-componentで統一するなどは野暮なことですよね？
+
+
+
+
+おすすめの確認方法
+  HMTLファイル
+その他の確認方法
+  HTMLタグ
+  GoogleAnalytics
+  Googleタグマネージャー
+  ドメイン名プロバイダ
+
+
+背景は白系、文字は黒系、枠は黒系
+これのバリエーションを作りたい。
+背景は黒系、文字は白系、枠は白系
+
+style　componentではコンポーネントの中で色々とバリエーションが作れた。
+今回の場合は、スタイルで違いをつけるようにするのか？
+どんな方法がもっとも効果的、効率的、Next.js的か？
+
+
+ボタンをクリックした後、insetされて影ができるのはいいのですが、背景色を元の色よりも濃くしたい場合はどうするの？

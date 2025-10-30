@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getTemples } from "@/lib/temples";
 import { HeroSwiper } from "@/components/ui/MySwiper";
+import { Button } from "@/components/ui/Button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import styles from "./page.module.scss";
 
@@ -73,7 +74,6 @@ const Home = () => {
           </div>
         </section>
       )}
-
       {/* 寺院のカード表示 */}
       <section className={`${styles.temples} appear`}>
         <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
@@ -106,7 +106,6 @@ const Home = () => {
           </div>
         )}
       </section>
-
       {/* 利用例 */}
       <section className={`${styles.scenes} appear`}>
         <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
@@ -149,7 +148,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
       {/* 利用案内 */}
       <section className={`${styles.guide} appear`} id="guide">
         <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
