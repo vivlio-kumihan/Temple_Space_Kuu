@@ -3,16 +3,37 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { getTemples } from "@/lib/temples";
 import { HeroSwiper } from "@/components/ui/MySwiper";
 import { Button } from "@/components/ui/Button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import MyModal from "@/components/ui/MyModal";
 import styles from "./page.module.scss";
+
+
+const MyModalPotal = ({ children }) => {
+  const target = document.querySelector("body");
+  return createPortal(children, target);
+};
 
 const Home = () => {
   const [temples, setTemples] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const openModal = () => {
+    setModalOpen(true);
+    setIsClosing(false);
+  };
+  const closeModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setModalOpen(false);
+      setIsClosing(false);
+    }, 300);
+  };
 
   // 寺院のデータを読み込む
   useEffect(() => {
@@ -74,6 +95,11 @@ const Home = () => {
           </div>
         </section>
       )}
+
+      <Button onClick={openModal} disabled={modalOpen}>
+        Modal Open
+      </Button>
+
       {/* 寺院のカード表示 */}
       <section className={`${styles.temples} appear`}>
         <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
@@ -203,6 +229,14 @@ const Home = () => {
           </div>
         </div>
       </section>
+      {modalOpen && (
+        <MyModalPotal>
+          <MyModal 
+            handleCloseClick={closeModal}
+            isClosing={isClosing} 
+          />
+        </MyModalPotal>
+      )}
     </>
   );
 };

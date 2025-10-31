@@ -37,33 +37,39 @@ $breakpoints: (
 // アニメーション
 @mixin anime(
   $name,
+
   // animation-duration
   //    1回のアニメーション周期が完了するまでの再生時間。
-  $dur: 1s,
+  $duration: 1s,
+
   // animation-timing-function（詳細のパラメータは下記）
   //    アニメーションがそれぞれの周期の中でどのように進行するかを設定。
-  $tim: ease,
+  $timing: ease,
+
   // animation-delay
   //    アニメーションをいつ開始するかを指定。
-  $dly: 0s,
+  $delay: 0s,
+
   // animation-iteration-count（詳細のパラメータは下記）
   //    停止するまでにアニメーション周期が再生される回数を指定。
-  $itr: 1,
+  $iteration: 1,
+
   // animation-direction（詳細のパラメータは下記）
   //    アニメーション再生の向きを順方向、逆方向、前後反転のいずれにするかを設定。
-  $dir: normal,
+  $direction: normal,
+
   // animation-fill-mode（詳細のパラメータは下記）
   //    アニメーションの開始と終了時の状態を指定。
-  $fil: forwards
+  $fill: forwards
   ) {
   animation: {
     name: $name;
-    duration: $dur;
-    timing-function: $tim;
-    delay: $dly;
-    iteration-count: $itr;
-    direction: $dir;
-    fill-mode: $fil;
+    duration: $duration;
+    timing-function: $timing;
+    delay: $delay;
+    iteration-count: $iteration;
+    direction: $direction;
+    fill-mode: $fill;
   }
 }
 

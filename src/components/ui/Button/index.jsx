@@ -43,9 +43,7 @@ export const Button = ({
     fullWidth ? styles.fullWidth : "",
     isClicked ? styles.clicked : "",
     className || "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  ].filter(Boolean).join(" ");
 
   return (
     <button className={buttonClasses} onClick={toggleHandler} {...props}>
