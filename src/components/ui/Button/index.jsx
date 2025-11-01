@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Button.module.scss";
 
 /**
@@ -13,6 +13,7 @@ import styles from "./Button.module.scss";
  * @param {string} [props.size="medium"] - サイズ: "small" | "medium" | "large"
  * @param {boolean} [props.rounded=false] - 丸ボタンにするか
  * @param {boolean} [props.fullWidth=false] - 幅100%にするか
+ * @param {boolean} [props.disabled] - disabled属性を生かすか殺すか
  * @param {string} [props.className] - 追加のカスタムクラス
  * @param {Function} [props.onClick] - クリックハンドラー
  */
@@ -24,11 +25,18 @@ export const Button = ({
   size = "medium",
   rounded = false,
   fullWidth = false,
+  disabled,
   onClick,
   ...props
 }) => {
   // ボタンをクリックした時の状態管理
   const [isClicked, setIsClicked] = useState(false);
+
+  // disabledになったらisClickedをリセットする。
+  useEffect(() => {
+    disabled && setIsClicked(false);
+  }, [disabled])
+
   const toggleHandler = (e) => {
     setIsClicked((prevState) => !prevState);
     // ボタンを配置している親から渡ってきたonClick属性を使って、親のイベントを発火させる。
@@ -46,9 +54,37 @@ export const Button = ({
   ].filter(Boolean).join(" ");
 
   return (
-    <button className={buttonClasses} onClick={toggleHandler} {...props}>
+    <button
+      className={buttonClasses}
+      onClick={toggleHandler}
+      disabled={disabled}
+      {...props}
+    >
       {children}
     </button>
+  );
+};
+
+// モバイル用グルーバルメニューを開くためのボタン
+export const MobileMenuButton = ({
+  children,
+  className,
+  variant = "light",
+  size = "medium",
+  onClick,
+  ...props
+}) => {
+  return (
+    <>
+      <button
+        className={styles.mobileMenuBtn}
+        {...props}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </>
   );
 };
 

@@ -34,19 +34,21 @@
 │   │       ├── AvailabilityCalendar
 │   │       │   ├── index.jsx
 │   │       │   └── AvailabilityCalendar.module.scss
-│   │       ├── MySwiper
+│   │       ├── Button
+│   │       │   ├── index.jsx
+│   │       │   └── Button.module.scss
+│   │       ├── Modal
 │   │       │   └── index.jsx
-│   │       │   └── MySwiperr.module.scss
+│   │       │   └── Modal.module.scss
 │   │       ├── InquiryForm
 │   │       │   └── index.jsx
 │   │       │   └── inquiryForm.module.scss
 │   │       ├── ReservationForm
 │   │       │   └── index.jsx
 │   │       │   └── ReservationForm.module.scss
-│   │       ├── Modal
+│   │       ├── MySwiper
 │   │       │   └── index.jsx
-│   │       │   └── Modal.module.scss
-│   │       ├── Button.jsx (styled-components)
+│   │       │   └── MySwiperr.module.scss
 │   │       ├── Gallery.jsx (styled-components)
 │   │       ├── Movie.jsx (styled-components)
 │   │       └── MixIn.jsx
@@ -67,8 +69,6 @@
 │   └── assets/
 ├── .env.local
 └── public/
-    ├── data/
-    │   └── temples.csv
     ├── images/
     │   ├── photographedWorks/
     │   │   └── meta-data.csv

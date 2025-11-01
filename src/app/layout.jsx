@@ -58,3 +58,17 @@ export default function RootLayout({ children }) {
 // どうしても開発中にこのエラーを抑え込みたい場合は、
 // 以下のコードを入れる。
 // => suppressHydrationWarning
+
+// <div id="container">
+//   <div className="mobileMenu">
+//     <div className="toggleBTN">
+//       <span></span>
+//       <span></span>
+//       <span></span>
+//     </div>
+//     <ul>
+//       <li>menu1</li>
+//       <li>menu2</li>
+//     </ul>
+//   </div>
+// </div>;

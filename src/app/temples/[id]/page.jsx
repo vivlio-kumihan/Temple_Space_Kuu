@@ -3,6 +3,7 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { getTempleById } from "@/lib/temples";
 import { HeroSwiper } from "@/components/ui/MySwiper";
@@ -13,6 +14,12 @@ import InquiryForm from "@/components/ui/InquiryForm";
 import { Button } from "@/components/ui/Button";
 
 import styles from "./temple.module.scss";
+import MyModal from "@/components/ui/MyModal";
+
+const MyModalPotal = ({ children}) => {
+  const target = document.querySelector("body");
+  return createPortal(children, target);
+};
 
 // porps（params）にはお寺のIDが入っている。
 const TempleDetail = ({ params }) => {
@@ -325,6 +332,22 @@ const TempleDetail = ({ params }) => {
           </button>
         </section>
       </div>
+
+      <Button 
+        onClick={handleModalOpen}
+        disabled={modalOpen}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </Button>
+      {modalOpen && (
+        <MyModalPotal>
+          <MyModal
+            handleCloseClick={handleModalClose} isClosing={isClosing}
+          />
+        </MyModalPotal>
+      )}
 
       {openModal && (
         <Modal toggleModal={handleToggleModal}>

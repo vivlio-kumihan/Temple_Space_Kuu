@@ -23,16 +23,19 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const openModal = () => {
+
+  useEffect(() => {
+  }, [modalOpen, isClosing])
+  const handleModalOpen = () => {
     setModalOpen(true);
     setIsClosing(false);
   };
-  const closeModal = () => {
+  const handleModalClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       setModalOpen(false);
       setIsClosing(false);
-    }, 300);
+    }, 500); // <= アニメーションの時間と同じに設定する。
   };
 
   // 寺院のデータを読み込む
@@ -96,9 +99,14 @@ const Home = () => {
         </section>
       )}
 
-      <Button onClick={openModal} disabled={modalOpen}>
+      <Button onClick={handleModalOpen} disabled={modalOpen}>
         Modal Open
       </Button>
+      {modalOpen && (
+        <MyModalPotal>
+          <MyModal handleCloseClick={handleModalClose} isClosing={isClosing} />
+        </MyModalPotal>
+      )}
 
       {/* 寺院のカード表示 */}
       <section className={`${styles.temples} appear`}>
@@ -229,14 +237,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-      {modalOpen && (
-        <MyModalPotal>
-          <MyModal 
-            handleCloseClick={closeModal}
-            isClosing={isClosing} 
-          />
-        </MyModalPotal>
-      )}
     </>
   );
 };
