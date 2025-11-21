@@ -3,40 +3,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { getTemples } from "@/lib/temples";
 import { HeroSwiper } from "@/components/ui/MySwiper";
-import { Button } from "@/components/ui/Button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
-import MyModal from "@/components/ui/MyModal";
 import styles from "./page.module.scss";
-
-
-const MyModalPotal = ({ children }) => {
-  const target = document.querySelector("body");
-  return createPortal(children, target);
-};
 
 const Home = () => {
   const [temples, setTemples] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-
-  useEffect(() => {
-  }, [modalOpen, isClosing])
-  const handleModalOpen = () => {
-    setModalOpen(true);
-    setIsClosing(false);
-  };
-  const handleModalClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setModalOpen(false);
-      setIsClosing(false);
-    }, 500); // <= アニメーションの時間と同じに設定する。
-  };
 
   // 寺院のデータを読み込む
   useEffect(() => {
@@ -52,19 +28,25 @@ const Home = () => {
   const heroSlides = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1600&h=900&fit=crop",
+      src: "/images/_img_slide01.jpg",
       subtitle: "kuː",
       caption: "近くのお寺で、じぶん時間の過ごし方",
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&h=900&fit=crop",
+      src: "/images/_img_slide02.jpg",
       subtitle: "kuː",
       caption: "お寺で紡ぐ、人とのご縁",
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=1600&h=900&fit=crop",
+      src: "/images/_img_slide03.jpg",
+      subtitle: "kuː",
+      caption: "Nothing stands alone. We exist through connections.",
+    },
+    {
+      id: 4,
+      src: "/images/_img_slide04.jpg",
       subtitle: "kuː",
       caption: "Nothing stands alone. We exist through connections.",
     },
@@ -77,6 +59,34 @@ const Home = () => {
     threshold: 0.4,
     stagger: 150, // 各要素の表示遅延(ms)
   });
+
+  // 利用例の画像データを定義
+  const sceneData = [
+    {
+      id: 1,
+      image: "/images/_img_scenes_yogi.jpg",
+      title: "ヨガ教室",
+      text: "静寂な空間で心身を整えるヨガ体験",
+    },
+    {
+      id: 2,
+      image: "/images/_img_scenes_sadou.jpg",
+      title: "茶道教室",
+      text: "日本の伝統文化に囲まれて学ぶ本格的なお茶会",
+    },
+    {
+      id: 3,
+      image: "/images/_img_scenes_takePhoro.jpg",
+      title: "写真撮影",
+      text: "格式ある寺院で特別な記念撮影",
+    },
+    {
+      id: 4,
+      image: "/images/_img_scenes_event.jpg",
+      title: "イベント",
+      text: "フリーマーケットや展示会など多目的利用",
+    },
+  ];
 
   return (
     <>
@@ -99,18 +109,9 @@ const Home = () => {
         </section>
       )}
 
-      <Button onClick={handleModalOpen} disabled={modalOpen}>
-        Modal Open
-      </Button>
-      {modalOpen && (
-        <MyModalPotal>
-          <MyModal handleCloseClick={handleModalClose} isClosing={isClosing} />
-        </MyModalPotal>
-      )}
-
       {/* 寺院のカード表示 */}
       <section className={`${styles.temples} appear`}>
-        <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
+        <h2 className={`sectionTitle ${styles.homeSectionTitle} temples-list up`}>
           掲載寺院
         </h2>
         {loading ? (
@@ -124,7 +125,23 @@ const Home = () => {
             {temples.map((temple) => (
               <Link key={temple.id} href={`/temples/${temple.id}`}>
                 <article className={styles.templeCard}>
-                  <div className={styles.templeCard__image}>{temple.name}</div>
+                  <div className={styles.templeCard__image}>
+                    {
+                      temple.image_url ? (
+                        <Image 
+                          src={temple.image_url}
+                          alt={temple.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          style={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <div className={styles.templeCard__placeholder}>
+                          {temple.name}
+                        </div>
+                      )
+                    }
+                  </div>
                   <div className={styles.templeCard__info}>
                     <h3 className={styles.templeCard__name}>{temple.name}</h3>
                     <div className={styles.templeCard__location}>
@@ -140,6 +157,7 @@ const Home = () => {
           </div>
         )}
       </section>
+
       {/* 利用例 */}
       <section className={`${styles.scenes} appear`}>
         <h2 className={`sectionTitle ${styles.homeSectionTitle} up`}>
@@ -148,38 +166,23 @@ const Home = () => {
           できます
         </h2>
         <div className={styles.scenes__grid}>
-          <div className={`${styles.sceneCard} up`}>
-            <div className={styles.sceneCard__image}>ヨガ教室</div>
-            <h3 className={styles.sceneCard__title}>ヨガ教室</h3>
-            <p className={styles.sceneCard__text}>
-              静寂な空間で心身を整えるヨガ体験
-            </p>
-          </div>
-          <div className={`${styles.sceneCard} up`}>
-            <div className={styles.sceneCard__image}>茶道教室</div>
-            <h3 className={styles.sceneCard__title}>茶道教室</h3>
-            <p className={styles.sceneCard__text}>
-              日本の伝統文化に囲まれて学ぶ
-              <br className="mq-sm-br" />
-              本格的なお茶会
-            </p>
-          </div>
-          <div className={`${styles.sceneCard} up`}>
-            <div className={styles.sceneCard__image}>写真撮影</div>
-            <h3 className={styles.sceneCard__title}>写真撮影</h3>
-            <p className={styles.sceneCard__text}>
-              格式ある寺院で特別な記念撮影
-            </p>
-          </div>
-          <div className={`${styles.sceneCard} up`}>
-            <div className={styles.sceneCard__image}>イベント</div>
-            <h3 className={styles.sceneCard__title}>イベント</h3>
-            <p className={styles.sceneCard__text}>
-              フリーマーケットや展示会など
-              <br className="mq-sm-br" />
-              多目的利用
-            </p>
-          </div>
+          {sceneData.map((scene) => (
+            <div key={scene.id} className={`${styles.sceneCard} up`}>
+              <div className={styles.sceneCard__image}>
+                <Image 
+                  src={scene.image}
+                  alt={scene.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  style={{ objectFit: "cover"}}
+                />
+              </div>
+              <h3 className={styles.sceneCard__title}>{scene.title}</h3>
+              <p className={styles.sceneCard__text}>
+                {scene.text}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
       {/* 利用案内 */}

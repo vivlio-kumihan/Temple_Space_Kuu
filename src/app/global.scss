@@ -31,6 +31,10 @@ section:first-of-type {
   font-weight: $fw-bold;
   text-align: center;
   color: $color-text-secondary;
+  &.temples-list {
+    margin-bottom: 0;
+    padding-right: 2rem;
+  }
   @include mq(md) {
     font-size: $fs-lg4;
     margin-bottom: 2rem;

@@ -2,8 +2,13 @@
 
 @use "@/styles/globals" as *;
 
-// モーダル
+// 背景
 .overlay {
+  @include anime(
+    $name: fadeIn,
+    $duration: fadeIn,
+    $timing: ease-in-out
+  );
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,41 +18,105 @@
   right: 0;
   bottom: 0;
   padding: 1rem;
-  background-color: rgba($color: $color-black, $alpha: .5);
+  background-color: rgba($color: $color-black, $alpha: .8);
   z-index: 1000;
-}
-
-.content {
-  position: relative;
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
-  padding: 2rem;
-  overflow-y: auto;
-  background-color: $color-bg-primary;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  
-  @include mq(md) {
-    padding: 3rem;
+  &.closing {
+    @include anime(
+      $name: fadeOut,
+      $duration: 0.5s,
+      $timing: ease-in-out,
+      $fill: forwards
+    );
   }
 }
 
-.close {
+// モーダル本体
+.modal {
+  @include anime(
+    $name: slideIn,
+    $duration: .5s,
+    $timing: ease-in-out
+  );
+  position: relative;
+  width: 90vw;
+  max-width: 600px;
+  max-height: 80vh;
+  padding: 2rem;
+  background-color: $color-off-white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba($color: $color-black, $alpha: .1),
+              0 10px 10px -5px rgba($color: $color-black, $alpha: .4);
+  &.closing {
+    @include anime(
+      $name: slideOut,
+      $duration: .5s,
+      $timing: ease-in-out,
+      $fill: forwards
+    );
+  }
+  @include mq(md) {
+    padding: 2.5rem;
+  }
+  &__contents {
+    max-height: calc(80vh - 4rem);
+    overflow-y: auto;
+    @include mq(md) {
+      max-height: calc(80vh - 5rem);
+    }
+  }
+}
+
+// コンテンツ
+.content {
+  line-height: 1.6;
+  color: $color-text-secondary;
+}
+
+// 閉じるボタン
+.closeButton {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  width: 40px;
-  height: 40px;
-  font-size: 2rem;
-  font-weight: $fw-bold;
-  color: $color-text-primary;
-  background-color: transparent;
-  border: none;
-  transition: all 0.3s;
-  cursor: pointer;
-  &:hover {
-    color: $color-primary;
-    transform: rotate(90deg);
+  z-index: 10;
+}
+
+// アニメーションの定義
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) scale(.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(.1);
   }
 }

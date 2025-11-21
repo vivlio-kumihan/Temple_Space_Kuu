@@ -25,7 +25,7 @@ export const Button = ({
   size = "medium",
   rounded = false,
   fullWidth = false,
-  disabled,
+  disabled = false,
   onClick,
   ...props
 }) => {

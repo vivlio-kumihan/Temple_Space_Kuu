@@ -20,7 +20,7 @@ export async function getTemples() {
         )
       `
       )
-      .order("created_at", { asending: true });
+      .order("created_at", { ascending: true });
 
     // エラーの詳細を出力
     if (error) {

@@ -17,7 +17,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba($color: #000000, $alpha: .3);
+      // background-color: rgba($color: #000000, $alpha: .3);
     }
   }
 }
@@ -104,11 +104,12 @@
 // 寺院のカード（横スクロール）
 .temples {
   @include content-width;
-  padding: 3rem 1rem;
+  width: 100%;
+  padding: 3rem 0rem 3rem 3rem;
   &__scroll {
     display: flex;
     gap: 1.5rem;
-    padding-bottom: 2rem;
+    padding: 2rem 0;
     scroll-behavior: smooth;
     overflow-x: auto;
     &::-webkit-scrollbar {
@@ -140,6 +141,9 @@
     }
   }
   &__image {
+    position: relative;
+    width: 100%;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -148,7 +152,18 @@
     font-family: $font-mincho;
     font-size: 1.25rem;
     color: $color-bg-primary;
-    background: linear-gradient(135deg, $color-primary 0%, $color-accent 100%);
+    background: #f5f5f5;
+    overflow: hidden;
+  }
+  &__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-black;
+    font-size: $fs-lg1;
+    background-color: #e0e0e0;
   }
   &__info {
     padding: 1.25rem;
@@ -193,6 +208,11 @@
     gap: 1.5rem;
     @include mq(md) {
       flex-direction: row;
+      gap: .75rem;
+      & > * {
+        flex: 1 1 0;
+        min-width: 0;
+      }
     }
   }
 }
@@ -207,15 +227,16 @@
     transform: translateY(-4px);
   }
   &__image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 200px;
-    font-family: $font-mincho;
-    font-size: 1.5rem;
-    color: $color-bg-primary;
-    background: linear-gradient(135deg, $color-accent 0%, $color-primary 100%);
+    font-size: $fs-lg1;
+    color: $color-black;
+    overflow: hidden;
   }
   &__title {
     padding: 1.25rem 1.25rem .5rem;
@@ -228,7 +249,8 @@
   &__text {
     padding: 0 1.25rem 1.25rem;
     font-family: $font-gothic;
-    font-size: $fs-base;
+    font-size: $fs-sm;
+    font-weight: 300;
     line-height: $lh-tight;
     text-align: center;
     color: $color-text-primary;
@@ -272,11 +294,13 @@
   &__title {
     margin-bottom: .5rem;
     font-family: $font-mincho;
-    font-size: $fs-lg3;
+    font-size: $fs-lg1;
   }
   &__text {
     font-family: $font-gothic;
-    font-size: $fs-lg1;
+    font-size: $fs-sm;
+    font-weight: 300;
+    line-height: $lh-tight;
   }
   &__arrow {
     font-size: $fs-lg3;

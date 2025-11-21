@@ -34,24 +34,20 @@
 │   │       ├── AvailabilityCalendar
 │   │       │   ├── index.jsx
 │   │       │   └── AvailabilityCalendar.module.scss
+│   │       ├── ReservationForm
+│   │       │   ├── index.jsx
+│   │       │   └── ReservationForm.module.scss
 │   │       ├── Button
 │   │       │   ├── index.jsx
 │   │       │   └── Button.module.scss
 │   │       ├── Modal
-│   │       │   └── index.jsx
+│   │       │   ├── index.jsx
 │   │       │   └── Modal.module.scss
-│   │       ├── InquiryForm
-│   │       │   └── index.jsx
-│   │       │   └── inquiryForm.module.scss
-│   │       ├── ReservationForm
-│   │       │   └── index.jsx
-│   │       │   └── ReservationForm.module.scss
 │   │       ├── MySwiper
-│   │       │   └── index.jsx
+│   │       │   ├── index.jsx
 │   │       │   └── MySwiperr.module.scss
 │   │       ├── Gallery.jsx (styled-components)
-│   │       ├── Movie.jsx (styled-components)
-│   │       └── MixIn.jsx
+│   │       └── Movie.jsx (styled-components)
 │   ├── hooks/
 │   │   └── useScrollAnimation.js
 │   ├── lib/

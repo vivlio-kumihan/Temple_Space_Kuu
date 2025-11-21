@@ -3,23 +3,16 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
-import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { getTempleById } from "@/lib/temples";
 import { HeroSwiper } from "@/components/ui/MySwiper";
 import AvailabilityCalendar from "@/components/ui/AvailabilityCalendar";
-import Modal from "@/components/ui/Modal";
+import { Modal } from "@/components/ui/Modal";
 import ReservationForm from "@/components/ui/ReservationForm";
 import InquiryForm from "@/components/ui/InquiryForm";
 import { Button } from "@/components/ui/Button";
 
 import styles from "./temple.module.scss";
-import MyModal from "@/components/ui/MyModal";
-
-const MyModalPotal = ({ children}) => {
-  const target = document.querySelector("body");
-  return createPortal(children, target);
-};
 
 // porps（params）にはお寺のIDが入っている。
 const TempleDetail = ({ params }) => {
@@ -31,26 +24,9 @@ const TempleDetail = ({ params }) => {
   const [temple, setTemple] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // モーダル管理
-  const [openModal, setOpenModal] = useState(false);
-  // モーダルのトグル・スイッチ
-  const toggleModal = () => {
-    setOpenModal((prev) => !prev);
-  };
-  // 選択しているフォームの名称
-  const [currentForm, setCurrentForm] = useState(null);
-
-  const handleToggleModal = (e) => {
-    const formName = e.currentTarget.dataset.which;
-    if  (formName === "reservation") {
-      if (!selectedDate || selectedTimes.length === 0) {
-        alert("日時を選択してください。");
-        return;
-      }
-    }
-    setCurrentForm(formName);
-    toggleModal();
-  };
+  // モーダル管理（予約フォーム用とお問い合わせフォーム用）
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
+  const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
 
   // カレンダーが選択された日時
   const [selectedDate, setSelectedDate] = useState(null);
@@ -61,11 +37,8 @@ const TempleDetail = ({ params }) => {
   const [calenderKey, setCalenderKey] = useState(0);
 
   useEffect(() => {
-    // console.log("取得したID:", id);
-    // console.log("IDの型:", typeof id);
     const loadTemple = async () => {
       const data = await getTempleById(id);
-      // console.log("取得した寺院のデータ：", data);
       setTemple(data);
       setLoading(false);
     };
@@ -78,6 +51,20 @@ const TempleDetail = ({ params }) => {
     setSelectedTimes(times);
   };
 
+  // 予約ボタンクリック時
+  const handleReservationClick = () => {
+    if (!selectedDate || selectedTimes.length === 0) {
+      alert("日時を選択してください。");
+      return;
+    }
+    setIsReservationModalOpen(true);
+  };
+
+  // お問い合わせボタンクリック時
+  const handleInquiryClick = () => {
+    setIsInquiryModalOpen(true);
+  };
+
   // 予約成功時
   const handleReservationSuccess = (result) => {
     // 成功メッセージを表示
@@ -88,7 +75,7 @@ const TempleDetail = ({ params }) => {
     // カレンダーをリセット
     setCalenderKey((prev) => prev + 1);
     // モーダルを閉じる
-    toggleModal();
+    setIsReservationModalOpen(false);
     // 5秒後にメッセージを消す
     setTimeout(() => {
       setSuccessMessage("");
@@ -105,7 +92,7 @@ const TempleDetail = ({ params }) => {
     // 成功メッセージを表示
     setSuccessMessage(result.message);
     // モーダルを閉じる
-    toggleModal();
+    setIsInquiryModalOpen(false);
     // 5秒後にメッセージを消す
     setTimeout(() => {
       setSuccessMessage("");
@@ -168,7 +155,9 @@ const TempleDetail = ({ params }) => {
           <div className={styles.successMessage}>{successMessage}</div>
         )}
         {/* 戻るボタン */}
-        <Button className={styles.backButton} onClick={() => router.back()}>←&nbsp;一覧に戻る</Button>
+        <Button className={styles.backButton} onClick={() => router.back()}>
+          ←&nbsp;一覧に戻る
+        </Button>
         {/* <button className={styles.backButton} onClick={() => router.back()}>
           ←&nbsp;一覧に戻る
         </button> */}
@@ -318,14 +307,13 @@ const TempleDetail = ({ params }) => {
         <section className={styles.action}>
           <button
             className={styles.reservationButton}
-            onClick={handleToggleModal}
-            data-which="reservation"
+            onClick={handleReservationClick}
           >
             日付を選んで予約する
           </button>
           <button
             className={styles.inquiryButton}
-            onClick={handleToggleModal}
+            onClick={handleInquiryClick}
             data-which="inquiry"
           >
             利用について質問する
@@ -333,43 +321,37 @@ const TempleDetail = ({ params }) => {
         </section>
       </div>
 
-      <Button 
-        onClick={handleModalOpen}
-        disabled={modalOpen}
+      {/* 予約フォームモーダル */}
+      <Modal
+        isOpen={isReservationModalOpen}
+        onClose={() => setIsReservationModalOpen(false)}
+        animationDuration={500}
+        title="予約フォーム"
       >
-        <span></span>
-        <span></span>
-        <span></span>
-      </Button>
-      {modalOpen && (
-        <MyModalPotal>
-          <MyModal
-            handleCloseClick={handleModalClose} isClosing={isClosing}
-          />
-        </MyModalPotal>
-      )}
+        <ReservationForm
+          templeId={temple.id}
+          templeName={temple.name}
+          selectedDate={selectedDate}
+          selectedTimes={selectedTimes}
+          onClose={() => setIsReservationModalOpen(false)}
+          onSuccess={handleReservationSuccess}
+        />
+      </Modal>
 
-      {openModal && (
-        <Modal toggleModal={handleToggleModal}>
-          {currentForm === "reservation" ? (
-            <ReservationForm
-              templeId={temple.id}
-              templeName={temple.name}
-              selectedDate={selectedDate}
-              selectedTimes={selectedTimes}
-              onClose={handleToggleModal}
-              onSuccess={handleReservationSuccess}
-            />
-          ) : (
-            <InquiryForm
-              templeId={temple.id}
-              templeName={temple.name}
-              onClose={handleToggleModal}
-              onSuccess={handleInquirySuccess}
-            />
-          )}
-        </Modal>
-      )}
+      {/* お問い合わせフォームモーダル */}
+      <Modal
+        isOpen={isInquiryModalOpen}
+        onClose={() => setIsInquiryModalOpen(false)}
+        animationDuration={500}
+        title="予約フォーム"
+      >
+        <InquiryForm
+          templeId={temple.id}
+          templeName={temple.name}
+          onClose={() => setIsInquiryModalOpen(false)}
+          onSuccess={handleInquirySuccess}
+        />
+      </Modal>
     </>
   );
 };
