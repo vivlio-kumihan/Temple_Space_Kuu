@@ -13,5 +13,10 @@ console.log("URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
 console.log("KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 console.log("================================");
 
+// 環境変数が未定義の場合はエラーを投げる
+if (!supabaseUrl | !supabaseAnonKey) {
+  throw new Error("Supabase環境変数が設定されていません。");
+}
+
 // Supabaseクライアントを作成
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
